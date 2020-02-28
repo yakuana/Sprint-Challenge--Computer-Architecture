@@ -151,6 +151,22 @@ class CPU:
                 self.alu("CMP", self.reg[self.ram[self.pc + 1]], self.reg[self.ram[self.pc + 2]])
                 self.pc += params
                 self.pc += 1
+            
+            elif IR == 0b01010101: # JEQ
+                flag = (self.fl & 0b1)
+                if flag:
+                    self.handle_jmp()   # jump to address stored in given register
+                else:
+                    self.pc += params
+                    self.pc += 1
+
+            elif IR == 0b01010110: # JNE
+                flag = (self.fl & 0b1)
+                if not flag:
+                    self.handle_jmp()   # jump to address stored in given register
+                else:
+                    self.pc += params
+                    self.pc += 1
 
             else: # HELPER METHODS
                 self.branchtable[IR]()
