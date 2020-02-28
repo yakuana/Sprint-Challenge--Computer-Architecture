@@ -30,6 +30,7 @@ class CPU:
         self.branchtable[0b01000101] = self.push_stack
         self.branchtable[0b01000110] = self.pop_stack
         self.branchtable[0b00011000] = self.mult_2_print
+        self.branchtable[0b01010100] = self.handle_jmp
 
     def load(self):
         """Load a program into memory."""
@@ -146,7 +147,7 @@ class CPU:
                 self.pc += params
                 self.pc += 1
             
-            elif IR == 0b10100111: #CMP
+            elif IR == 0b10100111: # CMP
                 self.alu("CMP", self.reg[self.ram[self.pc + 1]], self.reg[self.ram[self.pc + 2]])
                 self.pc += params
                 self.pc += 1
@@ -195,3 +196,7 @@ class CPU:
     def mult_2_print(self):
         reg = 0
         print(self.reg[reg] * 2)
+    
+    # JMP 
+    def handle_jmp(self):
+        self.pc = self.reg[self.ram[self.pc + 1]]
